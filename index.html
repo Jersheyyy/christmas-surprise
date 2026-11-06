@@ -1,0 +1,227 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#4a1724">
+<title>Our Little Christmas Story</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Great+Vibes&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--wine:#4a1724;--wine2:#6b2635;--gold:#c6a56a;--cream:#f7efdf;--ink:#4a342b;--muted:#8d7567}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;color:var(--ink);font-family:'Cormorant Garamond',serif;background:radial-gradient(ellipse at top,#7b3944 0%,#35121e 72%);overflow-x:hidden}
+#snow{position:fixed;inset:0;pointer-events:none;z-index:5}
+.lights{position:fixed;top:0;left:0;width:100%;height:12px;z-index:7;display:flex;justify-content:space-around;pointer-events:none}
+.lights i{width:8px;height:12px;border-radius:50%;background:#f7d88b;box-shadow:0 0 12px #f7d88b;animation:blink 1.8s infinite alternate}
+.lights i:nth-child(2n){background:#e9a4a4;box-shadow:0 0 12px #e9a4a4;animation-delay:.7s}
+@keyframes blink{to{opacity:.3;filter:brightness(.7)}}
+.wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:46px 14px 28px;position:relative;z-index:2}
+.book{width:min(760px,100%);min-height:650px;background:var(--cream);border:1px solid #d2b985;box-shadow:0 24px 70px #16070dbb, inset 0 0 50px #c8a97933;position:relative;overflow:hidden}
+.book:before{content:"";position:absolute;inset:12px;border:1px solid #c7a66d;pointer-events:none;z-index:1}
+.page{display:none;min-height:650px;padding:62px clamp(26px,7vw,76px) 54px;position:relative;animation:appear .65s ease both}
+.page.active{display:flex;flex-direction:column;justify-content:center}
+@keyframes appear{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
+.kicker{text-transform:uppercase;letter-spacing:4px;font:11px 'Playfair Display',serif;color:#9a7650;text-align:center}
+h1,h2{font-family:'Playfair Display',serif;font-weight:500;text-align:center;color:var(--wine);line-height:1.25}
+h1{font-size:clamp(34px,7vw,58px);margin:16px 0}
+h2{font-size:clamp(26px,5vw,38px);margin:12px 0 22px}
+.script{font-family:'Great Vibes',cursive;color:#8b3d4b;text-align:center;font-size:clamp(36px,7vw,56px);margin:8px 0}
+p{font-size:21px;line-height:1.55;margin:10px 0}
+.center{text-align:center}
+.small{font-size:17px;color:var(--muted)}
+.ornament{color:var(--gold);font-size:24px;text-align:center;letter-spacing:10px;margin:18px 0}
+.cover{background:linear-gradient(145deg,#581d2c,#35111c);color:#f8edda}
+.cover h1,.cover .script{color:#f5e5c6}
+.cover .kicker{color:#d9bd8b}
+.cover:after{content:"";position:absolute;inset:27px;border:1px solid #c6a56a88;pointer-events:none}
+.cover p{color:#e9d9c7}
+.btn{border:1px solid #a77c4c;background:var(--wine);color:#fff4df;padding:12px 24px;font:14px 'Playfair Display',serif;letter-spacing:1px;cursor:pointer;transition:.2s;margin:8px auto 0;display:inline-block}
+.btn:hover{background:#713143;transform:translateY(-2px)}
+.btn.light{background:transparent;color:var(--wine)}
+.controls{display:flex;justify-content:space-between;align-items:center;padding:14px 26px;background:#eee2ce;border-top:1px solid #d5bd96;position:relative;z-index:2}
+.controls button{background:transparent;border:0;color:var(--wine);font:14px 'Playfair Display',serif;cursor:pointer;padding:8px}
+#pageNo{font-size:14px;color:#92765f}
+.gamebox{max-width:540px;width:100%;margin:12px auto 0;text-align:center}
+.question{font:19px 'Playfair Display',serif;color:var(--wine);margin:20px 0}
+.choices{display:grid;gap:10px;margin:18px auto;max-width:430px}
+.choice{background:#fffaf0;border:1px solid #d8c29d;padding:12px 14px;color:#634a3e;font:18px 'Cormorant Garamond',serif;cursor:pointer;transition:.2s}
+.choice:hover{background:#f1e3cc;border-color:#a77c4c}
+.choice.correct{background:#e4eddf;border-color:#819b76}
+.choice.wrong{background:#f3dfdf;border-color:#bb7777}
+.feedback{min-height:34px;font-size:18px;color:#8a4550;margin:12px 0}
+.progress{font:12px 'Playfair Display',serif;color:#9b8066;letter-spacing:2px}
+.envelope{width:180px;height:120px;margin:22px auto 26px;position:relative;background:#b88d62;box-shadow:0 10px 24px #59352233;cursor:pointer}
+.envelope:before{content:"";position:absolute;inset:0;background:#d8b98c;clip-path:polygon(0 0,100% 0,50% 60%)}
+.envelope:after{content:"";position:absolute;inset:0;background:#c49c70;clip-path:polygon(0 100%,50% 48%,100% 100%)}
+.seal{position:absolute;z-index:2;left:50%;top:58%;transform:translate(-50%,-50%);width:34px;height:34px;border-radius:50%;background:#7b2639;color:#f6dfb5;display:grid;place-items:center;font-size:18px}
+.letter{font-size:20px;line-height:1.65;text-align:left}
+.letter p{margin:0 0 14px}
+.signature{font-family:'Great Vibes',cursive;font-size:37px;color:#8b3d4b;text-align:right;margin-top:20px}
+.heart{color:#a9475b}
+footer{text-align:center;color:#e9d9c7;font-size:14px;margin-top:18px;letter-spacing:1px}
+.music{position:fixed;right:14px;bottom:14px;z-index:8;background:#f7efdf;color:#4a1724;border:1px solid #c6a56a;border-radius:30px;padding:9px 14px;font:13px 'Playfair Display',serif;cursor:pointer;box-shadow:0 4px 18px #0004}
+@media(max-width:520px){.book{min-height:620px}.page{min-height:620px;padding:55px 30px 40px}.controls{padding:12px 18px}p{font-size:19px}.letter{font-size:19px}}
+</style>
+</head>
+<body>
+<canvas id="snow"></canvas>
+<div class="lights" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+<audio id="music" loop><source src="song.mp3" type="audio/mpeg"></audio>
+<button class="music" id="musicBtn" onclick="toggleMusic()">♫ Play our song</button>
+
+<div class="wrap">
+<div class="book">
+<section class="page cover active">
+<div class="kicker">a little christmas keepsake</div>
+<div class="ornament">✦ ❄ ✦</div>
+<div class="script">to my favorite person</div>
+<h1>Our Little<br>Christmas Story</h1>
+<p class="center">A collection of little moments, happy memories, and one very important question.</p>
+<div class="ornament">❄ ✧ ❄</div>
+<p class="center small">Christmas 2026</p>
+<div class="center"><button class="btn" onclick="nextPage()">Open our story ✦</button></div>
+</section>
+
+<section class="page">
+<div class="kicker">chapter one</div><h2>It started with you</h2>
+<div class="ornament">✧ ❄ ✧</div>
+<p class="center">Who would've thought that someone I met as a coworker would become someone this special to me?</p>
+<p class="center">What started with conversations slowly became something I looked forward to every day. And somehow, without even noticing, you became one of my favorite parts of life.</p>
+<p class="center small">Some of the best stories begin unexpectedly.</p>
+<div class="center"><button class="btn" onclick="nextPage()">Continue our story</button></div>
+</section>
+
+<section class="page">
+<div class="kicker">chapter two</div><h2>Little things, big feelings</h2>
+<div class="ornament">✦</div>
+<p class="center">I love our simple dates, our anime moments, our random conversations, and even the little updates we share throughout the day.</p>
+<p class="center">Thank you for listening to my stories, for being patient with me, and for making me feel safe even when we're just talking through a screen.</p>
+<p class="center">I hope you know that I treasure all those ordinary moments with you.</p>
+<div class="center"><button class="btn" onclick="nextPage()">I have a surprise for you</button></div>
+</section>
+
+<section class="page">
+<div class="kicker">before the letter</div><h2>Let's play a little game</h2>
+<div class="script">ready, baby?</div>
+<p class="center">Before you get to the letter, you have to unlock a few memories first. Don't worry, you can try again if you get one wrong. 🤍</p>
+<div class="ornament">❄ ✧ ❄</div>
+<div class="center"><button class="btn" onclick="nextPage()">Let's play!</button></div>
+</section>
+
+<section class="page" id="game1">
+<div class="kicker">game 1 · unlock my heart</div><h2>Where did our story begin?</h2>
+<div class="gamebox">
+<div class="progress">A LITTLE MEMORY TEST</div>
+<div class="question">What was the first big step that started our story?</div>
+<div class="choices">
+<button class="choice" onclick="answer(this,false,'Not quite! Think about the day you first told me how you felt 🤍')">Our first date</button>
+<button class="choice" onclick="answer(this,true,'You got it! June 5 will always be special to me. 🤍','g1')">Your confession</button>
+<button class="choice" onclick="answer(this,false,'Almost, baby. That was a different special day!')">Our first Christmas</button>
+</div>
+<div class="feedback" id="g1feedback"></div>
+<button class="btn" id="g1next" style="display:none" onclick="nextPage()">Next game →</button>
+</div>
+</section>
+
+<section class="page" id="game2">
+<div class="kicker">game 2 · our little memories</div><h2>How well do you remember us?</h2>
+<div class="gamebox">
+<div class="progress" id="g2progress">QUESTION 1 OF 2</div>
+<div class="question" id="g2question">What did we enjoy watching together?</div>
+<div class="choices" id="g2choices">
+<button class="choice" onclick="game2Answer(this,false)">K-dramas</button>
+<button class="choice" onclick="game2Answer(this,true)">Anime</button>
+<button class="choice" onclick="game2Answer(this,false)">Documentaries</button>
+</div>
+<div class="feedback" id="g2feedback"></div>
+<button class="btn" id="g2next" style="display:none" onclick="nextPage()">Next game →</button>
+</div>
+</section>
+
+<section class="page" id="game3">
+<div class="kicker">final game · how well do you know us?</div><h2>Our special dates</h2>
+<div class="gamebox">
+<div class="progress" id="g3progress">QUESTION 1 OF 3</div>
+<div class="question" id="g3question">When is the day you confessed to me?</div>
+<div class="choices" id="g3choices"></div>
+<div class="feedback" id="g3feedback"></div>
+<button class="btn" id="g3next" style="display:none" onclick="game3Next()">Next question →</button>
+<button class="btn" id="g3finish" style="display:none" onclick="nextPage()">Unlock my letter ✦</button>
+</div>
+</section>
+
+<section class="page">
+<div class="kicker">you did it</div><h2>You unlocked something special</h2>
+<div class="script">just for you</div>
+<p class="center">You've made it through our little memories. But there's one more thing I want you to know...</p>
+<div class="envelope" onclick="openLetter()" aria-label="Open the letter"><div class="seal">♥</div></div>
+<p class="center small">Tap the envelope to open your letter</p>
+<div class="center"><button class="btn" onclick="openLetter()">Open my letter 🤍</button></div>
+</section>
+
+<section class="page">
+<div class="kicker">a letter for you</div><h2>To my love, Lyan</h2>
+<div class="ornament">✧ ❄ ✧</div>
+<div class="letter">
+<p>Hi, baby 🤍</p>
+<p>Since this is our first Christmas together, I wanted to give you something that you can keep and look back on. I may not always know the perfect words to say, but I hope this little book reminds you how much you mean to me.</p>
+<p>Who would've thought that a simple confession on June 5, 2026 would lead us here? From our first conversations, to our dates, to all the little moments we've shared, I'm genuinely happy that I got to know you and that we gave this story a chance.</p>
+<p>Thank you for being patient with me, for listening to my rants, for making time for me, and for making me feel safe. I appreciate the way you let me be myself around you. I hope I make you feel just as loved, understood, and appreciated.</p>
+<p>I don't need everything to be perfect. I just want us to keep choosing each other, to keep learning about one another, and to grow together through whatever comes our way. I want to be someone you can lean on, too, especially on the days when things feel heavy.</p>
+<p>And there's one more thing I've been wanting to say...</p>
+<p><strong>Baby, sinasagot na kita. 🤍</strong> Thank you for courting me and for making me feel that this is something worth saying yes to. I want June 5 to be our anniversary, because that's the day our story began for me.</p>
+<p>Here's to our first Christmas, to more dates, more laughs, more late-night conversations, and to all the memories we haven't made yet.</p>
+<p>I'm genuinely happy that it's you. Love na love kitaaa.</p>
+</div>
+<div class="signature">Always yours,</div>
+<p class="center heart">Your Girlfriend ♥</p>
+<div class="center"><button class="btn light" onclick="nextPage()">One last page</button></div>
+</section>
+
+<section class="page cover">
+<div class="kicker">our first christmas · 2026</div>
+<div class="ornament">✦ ❄ ✦</div>
+<div class="script">and this is only the beginning</div>
+<h1>Merry Christmas,<br>my love.</h1>
+<p class="center">Thank you for being part of my favorite story.</p>
+<div class="ornament">♡ ✧ ♡</div>
+<p class="center">I choose you, today and in all the little tomorrows.</p>
+<div class="center"><button class="btn" onclick="goTo(0)">Read it again ↺</button></div>
+</section>
+
+<div class="controls"><button onclick="prevPage()">← Previous</button><span id="pageNo">1 / 10</span><button onclick="nextPage()">Next →</button></div>
+</div>
+</div>
+<footer>made with love, just for you ♡</footer>
+
+<script>
+const pages=[...document.querySelectorAll('.page')];let current=0;const pageNo=document.getElementById('pageNo');
+function goTo(n){if(n<0||n>=pages.length)return;pages[current].classList.remove('active');current=n;pages[current].classList.add('active');pageNo.textContent=(current+1)+' / '+pages.length;window.scrollTo({top:0,behavior:'smooth'});}
+function nextPage(){if(current<pages.length-1)goTo(current+1)}
+function prevPage(){if(current>0)goTo(current-1)}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')nextPage();if(e.key==='ArrowLeft')prevPage()});
+function answer(btn,correct,msg,id){const box=btn.parentElement;[...box.children].forEach(b=>b.disabled=true);btn.classList.add(correct?'correct':'wrong');const feedback=document.getElementById('g1feedback');feedback.textContent=msg;if(correct)document.getElementById('g1next').style.display='inline-block';else{setTimeout(()=>{[...box.children].forEach(b=>{b.disabled=false;b.classList.remove('wrong')})},850)}}
+let g2step=0;
+function game2Answer(btn,correct){const choices=document.getElementById('g2choices');if(!correct){btn.classList.add('wrong');document.getElementById('g2feedback').textContent='Try again, baby! You know this one. 🤍';setTimeout(()=>btn.classList.remove('wrong'),700);return}
+btn.classList.add('correct');[...choices.children].forEach(b=>b.disabled=true);document.getElementById('g2feedback').textContent='Correct! One more little memory. ✨';
+setTimeout(()=>{g2step++;if(g2step===1){document.getElementById('g2progress').textContent='QUESTION 2 OF 2';document.getElementById('g2question').textContent='What kind of date did we have in Bulacan?';choices.innerHTML='';[['A beach day',false],['A church / grotto date',true],['A shopping date',false]].forEach(([label,ok])=>{let b=document.createElement('button');b.className='choice';b.textContent=label;b.onclick=()=>game2Answer(b,ok);choices.appendChild(b)});document.getElementById('g2feedback').textContent='';}else{document.getElementById('g2feedback').textContent='You remembered our little moments! 🤍';document.getElementById('g2next').style.display='inline-block'}},700)}
+const questions=[
+{q:'When is the day you confessed to me?',a:['June 5, 2026','June 27, 2026','September 27, 2026'],correct:0},
+{q:'When is our first date?',a:['June 5, 2026','June 27, 2026','September 27, 2026'],correct:1},
+{q:'When is our first kiss?',a:['June 5, 2026','June 27, 2026','September 27, 2026'],correct:2}
+];let g3step=0;
+function renderGame3(){let q=questions[g3step];document.getElementById('g3progress').textContent=`QUESTION ${g3step+1} OF 3`;document.getElementById('g3question').textContent=q.q;let c=document.getElementById('g3choices');c.innerHTML='';q.a.forEach((a,i)=>{let b=document.createElement('button');b.className='choice';b.textContent=a;b.onclick=()=>{if(i!==q.correct){b.classList.add('wrong');document.getElementById('g3feedback').textContent='Not quite! Try again, baby. 🤍';setTimeout(()=>b.classList.remove('wrong'),700);return}b.classList.add('correct');[...c.children].forEach(x=>x.disabled=true);document.getElementById('g3feedback').textContent=['That day changed everything. 🤍','Our first date! One of my favorite memories.','Our first kiss. A day to remember. 💗'][g3step];document.getElementById('g3next').style.display=g3step<2?'inline-block':'none';document.getElementById('g3finish').style.display=g3step===2?'inline-block':'none';};c.appendChild(b)});document.getElementById('g3feedback').textContent='';document.getElementById('g3next').style.display='none';document.getElementById('g3finish').style.display='none'}
+function game3Next(){g3step++;renderGame3()}
+function openLetter(){goTo(8)}
+renderGame3();
+const music=document.getElementById('music');function toggleMusic(){if(music.paused){music.play().then(()=>document.getElementById('musicBtn').textContent='♫ Pause our song').catch(()=>alert('Please add your song.mp3 file beside this HTML, then tap Play again.'));}else{music.pause();document.getElementById('musicBtn').textContent='♫ Play our song'}}
+const canvas=document.getElementById('snow'),ctx=canvas.getContext('2d');let flakes=[];
+function resize(){canvas.width=innerWidth*devicePixelRatio;canvas.height=innerHeight*devicePixelRatio;ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);flakes=Array.from({length:95},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*2+0.6,s:Math.random()*1.1+.35,w:Math.random()*1.2-.6}))}
+function snow(){ctx.clearRect(0,0,innerWidth,innerHeight);ctx.fillStyle='rgba(255,247,229,.8)';flakes.forEach(f=>{ctx.beginPath();ctx.arc(f.x,f.y,f.r,0,Math.PI*2);ctx.fill();f.y+=f.s;f.x+=f.w;if(f.y>innerHeight){f.y=-5;f.x=Math.random()*innerWidth}if(f.x>innerWidth+5)f.x=-5;if(f.x< -5)f.x=innerWidth+5});requestAnimationFrame(snow)}
+addEventListener('resize',resize);resize();snow();
+</script>
+</body>
+</html>
